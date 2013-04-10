@@ -1,1 +1,15 @@
 BansheeX - A simple perl script for using Banshee in Xchat
+
+Ver 0.5 :
+
+	- Display rating of the playing song
+	- Display Stars instead of number for rating
+	- rate song
+
+Ver 0.1 :
+	
+	- Display current playing song
+	- "Play" action from xchat
+	- "Pause" action from xchat
+	- Next song
+	- previous song

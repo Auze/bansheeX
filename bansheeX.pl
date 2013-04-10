@@ -20,11 +20,11 @@ use strict;
 use Xchat qw( :all);
 
 # Register plugin in Xchat
-register('BansheeX', '0.1', 'Simple Script for using Banshee in Xchat');
+register('BansheeX', '0.5', 'Simple Script for using Banshee in Xchat');
 
 # Welcome Message
 command("echo ###########");
-command("echo BansheeX Script 0.1");
+command("echo BansheeX Script 0.5");
 command("echo Simple Script for using Banshee in Xchat");
 command("echo Author : Auze @ Absylonia");
 command("echo /bhelp pour la liste des commandes");
@@ -37,6 +37,8 @@ hook_command('bpause',\&bpause);
 hook_command('bnext', \&bnext);
 hook_command('bvers',\&bvers);
 hook_command('bprev',\&bprev);
+hook_command('brate',\&brate);
+hook_command('babout',\&babout);
 hook_command('btest',\&btest);
 hook_command('bhelp', \&help);
  
@@ -62,10 +64,45 @@ sub bcur {
 		my $rawstatus = substr(`banshee --query-current-state`, 15);
 		my $status = substr($rawstatus,0,length($rawstatus) -1);
 		
-		my $listening ="\cC04[$version : $status] \cC09$title"." \cC04par \cC09$artist"." \cC04sur \cC09$album";
+		my $score = &starScore();
+		
+		my $listening ="\cC24[\cC20$version : \cC18$status\cC24] \cC25$title"." \cC20par \cC25$artist"." \cC20sur \cC25$album "."\cC24(\cC25$score\cC24)";
 		command("me  $listening");
 	}
 }
+
+# Display stars for score instead of number
+sub starScore() {
+	
+	my $rawscore = substr(`banshee --query-rating`, 8);
+	my $score =substr($rawscore,0,length($rawscore)-1);
+	
+	if ($score == 1) {
+		my $starscore = "★☆☆☆☆";
+		return $starscore;
+	}
+	if($score == 2) {
+		 my $starscore="★★☆☆☆";
+		 return $starscore;
+	}
+	if($score == 3) {
+	 	my $starscore ="★★★☆☆";
+	 	return $starscore;
+	 }
+	 if ($score == 4) {
+	 	my $starscore ="★★★★☆";
+	 	return $starscore;
+	 }
+	 if ($score == 5) {
+	 	my $starscore ="★★★★★";
+	 	return  $starscore;
+	 }
+	 else {
+	 	my $starscore = "☆☆☆☆☆";
+	 	return $starscore;
+	 }
+}
+
 
 # Play the current track
 sub bplay {
@@ -91,6 +128,65 @@ sub bprev {
 	command("echo Morceau précédent")
 }
 
+# Rating current track ( USAGE : /brate [rating] )
+sub brate {
+	my $score = -1;
+	my $score=$_[0][1];
+	
+	my $rawtitle = substr(`banshee --query-title`, 7);
+	my $title = substr($rawtitle,0, length($rawtitle) -1);
+	
+	my $rawartist = substr(`banshee --query-artist`, 8);
+	my $artist = substr($rawartist,0,length($rawartist) -1);
+	
+	if ($score eq 0) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	
+	if ($score == 1) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	
+	if ($score == 2) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	
+	if ($score == 3) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	
+	if ($score == 4) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	
+	if ($score == 5) {
+		`banshee --set-rating=$score`;
+		command("echo $title de $artist a maintenant une note de $score");
+		return;
+	}
+	# | $score != 2 || $score != 3 || $score != 4 || $score != 5 || $score != 0
+	if ($score eq undef || $score != 1 .. 5) {
+		command("echo brate usage : /brate [rating]; Rating = [0 - 5]");
+		return;
+	}
+	
+	else {
+		command("echo brate usage :  /brate [rating]; Rating = [0 - 5]");
+		return;
+	}
+}
+
+
 # Display Banshee version
 sub bvers {
 	my $rawversion = `banshee --version`;
@@ -98,7 +194,7 @@ sub bvers {
 	command("echo $version");
 }
 
-# Test if Banshee curently running
+# Test if Banshee currently running
 sub btest {
 	`pidof banshee`;
 	my $btest = $?;
@@ -111,6 +207,11 @@ sub btest {
 	}
 }
 
+# The About function ;) 
+sub babout {
+	command("me BansheeX 0.5 - A simple perl script for using Banshee in Xchat - Auze - 2013")
+}
+
 # Display list of BansheeX command
 sub help {
 	command("echo Liste des commandes disponibles :");
@@ -120,7 +221,9 @@ sub help {
 	command("echo bpause - Mettre le lecteur en pause");
 	command("echo bnext - Passe au morceau suivant");
 	command("echo bprev - Retourne au morceau précédent");
+	command("echo brate [rate] - Note la morceau en cours de [rate]");
 	command("echo bvers - Affiche la version de banshee");
-	command("echo btest - Vérifie le lancement de Banshee (Ne retourne rien si lancé)");
+	command("echo babout - Affiche la version du Script et son Auteur");
+	command("echo btest - Vérifie le lancement de Banshee (0 Si lancé)");
 }
 
