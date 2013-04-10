@@ -209,7 +209,7 @@ sub btest {
 
 # The About function ;) 
 sub babout {
-	command("me BansheeX 0.5 - A simple perl script for using Banshee in Xchat - Auze - 2013")
+	command("me BansheeX 0.5 - A simple perl script for using Banshee in Xchat - Auze")
 }
 
 # Display list of BansheeX command
