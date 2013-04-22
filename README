@@ -1,5 +1,8 @@
 BansheeX - A simple perl script for using Banshee in Xchat
 
+Ver 1.0
+	- Fix : ths script will not crash Xchat anymore if banshee not running
+
 Ver 0.55 :
 
 	- Translating the script in english
