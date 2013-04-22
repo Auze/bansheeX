@@ -1,4 +1,4 @@
-BansheeX - A simple perl script for using Banshee in Xchat
+BansheeX - A simple perl script for using Banshee in Xchat and HexChat
 
 Ver 1.0
 	- Fix : ths script will not crash Xchat anymore if banshee not running
