@@ -41,30 +41,30 @@ hook_command('brate',\&brate);
 hook_command('babout',\&babout);
 hook_command('btest',\&btest);
 hook_command('bhelp', \&help);
- 
+
  # Display current track if running
 sub bcur {
-	
+
 	my $run = &btest();
 	if ($run == 0) {
-	
+
 		my $rawtitle = substr(`banshee --query-title`, 7);
 		my $title = substr($rawtitle,0, length($rawtitle) -1);
-		
+
 		my $rawartist = substr(`banshee --query-artist`, 8);
 		my $artist = substr($rawartist,0,length($rawartist) -1);
-		
+
 		my $rawalbum = substr(`banshee --query-album`, 7);
 		my $album= substr($rawalbum,0,length($rawalbum) -1);
-		
+
 		my $rawversion = `banshee --version`;
 		my $version = substr($rawversion,0,11);
-		
+
 		my $rawstatus = substr(`banshee --query-current-state`, 15);
 		my $status = substr($rawstatus,0,length($rawstatus) -1);
-		
+
 		my $score = &starScore();
-		
+
 		my $listening ="\cC24[\cC20$version : \cC18$status\cC24] \cC25$title"." \cC20by \cC25$artist"." \cC20on \cC25$album "."\cC24(\cC25$score\cC24)";
 		command("me  $listening");
 	}
@@ -72,13 +72,13 @@ sub bcur {
 
 # Display stars for score instead of number
 sub starScore() {
-	
+
 	my $run = &btest();
 	if ($run == 0) {
-	
+
 		my $rawscore = substr(`banshee --query-rating`, 8);
 		my $score =substr($rawscore,0,length($rawscore)-1);
-		
+
 		if ($score == 1) {
 			my $starscore = "★☆☆☆☆";
 			return $starscore;
@@ -149,43 +149,43 @@ sub brate {
 	if ($run == 0) {
 		my $score = -1;
 		my $score=$_[0][1];
-		
+
 		my $rawtitle = substr(`banshee --query-title`, 7);
 		my $title = substr($rawtitle,0, length($rawtitle) -1);
-		
+
 		my $rawartist = substr(`banshee --query-artist`, 8);
 		my $artist = substr($rawartist,0,length($rawartist) -1);
-		
+
 		if ($score eq 0) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
 			return;
 		}
-		
+
 		if ($score == 1) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
 			return;
 		}
-		
+
 		if ($score == 2) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
 			return;
 		}
-		
+
 		if ($score == 3) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
 			return;
 		}
-		
+
 		if ($score == 4) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
 			return;
 		}
-		
+
 		if ($score == 5) {
 			`banshee --set-rating=$score`;
 			command("echo $title of $artist has now a rating of $score");
@@ -196,7 +196,7 @@ sub brate {
 			command("echo brate usage : /brate [rating]; Rating = [0 - 5]");
 			return;
 		}
-		
+
 		else {
 			command("echo brate usage :  /brate [rating]; Rating = [0 - 5]");
 			return;
@@ -219,7 +219,7 @@ sub bvers {
 sub btest {
 	`pidof banshee`;
 	my $btest = $?;
-	if ($btest == 0) { 
+	if ($btest == 0) {
 		return 0;
 	}
 	else {
@@ -228,7 +228,7 @@ sub btest {
 	}
 }
 
-# The About function ;) 
+# The About function ;)
 sub babout {
 	command("me BansheeX 1.0 - A simple perl script for using Banshee in Xchat - Auze ")
 }
@@ -247,4 +247,3 @@ sub help {
 	command("echo babout - Display script version");
 	command("echo btest - Test if banshee is running (0 if running)");
 }
-
